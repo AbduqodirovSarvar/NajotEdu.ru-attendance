@@ -10,29 +10,43 @@ namespace NajotEdu.ru.Najot.data.Repositories
     {
         protected readonly AppDbContext _db;
         protected readonly DbSet<T> _dbSet;
-        public Task<T> CreateAsync(T entity)
+
+        public GenericRepository(AppDbContext dbcontext)
         {
-            throw new NotImplementedException();
+            _db = dbcontext;
+            _dbSet = dbcontext.Set<T>();
+        }
+        public async Task<T> CreateAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            await _db.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<T> DeleteAsync(int id)
+        public async Task<T> DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+
+            _dbSet.Remove(entity);
+            await _db.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<T> GetAllAsync(Expression<Func<T, bool>> predicate)
+        public IEnumerable<T> GetAllAsync(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return predicate is null? _dbSet : _dbSet.Where(predicate);
         }
 
-        public Task<T> GetAsync(int id)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _dbSet.FirstOrDefaultAsync(predicate);
         }
 
-        public Task<T> UpdateAsync(int id, T entity)
+        public async Task UpdateAsync(int id, T entity)
         {
-            throw new NotImplementedException();
+            entity.Id = id;
+            var result = _dbSet.Update(entity);
+            await _db.SaveChangesAsync();
         }
+
     }
 }

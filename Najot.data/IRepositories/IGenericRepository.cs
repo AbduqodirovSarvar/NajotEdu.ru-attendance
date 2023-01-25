@@ -6,9 +6,9 @@ namespace NajotEdu.ru.Najot.data.IRepositories
     public interface IGenericRepository<T> where T : Auditable
     {
         Task<T> CreateAsync(T entity);
-        Task<T> UpdateAsync(int id, T entity);
-        Task<T> DeleteAsync(int id);
-        Task<T> GetAsync(int id);
-        Task<T> GetAllAsync(Expression<Func<T, bool>> predicate);
+        Task UpdateAsync(int id, T entity);
+        Task<T> DeleteAsync(T entity);
+        Task<T> GetAsync(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> GetAllAsync(Expression<Func<T, bool>> predicate);
     }
 }
