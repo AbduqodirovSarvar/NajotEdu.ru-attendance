@@ -8,7 +8,7 @@ namespace NajotEdu.ru.Najot.Domain.Entities
         public string Name { get; set; }
         public string UserName { get; set; }
         public string PasswordHash { get; set; }
-        public UserRole UserRole { get; set; }
+        public UserRole UserRole { get; set; } = UserRole.Teacher;
 
     }
 }

@@ -2,7 +2,7 @@
 {
     public class LoginRegistr
     {
-        public string TeacherName { get; set; }
-        public string TeacherLogin{ get; set; }
+        public string UserName{ get; set; }
+        public string Password { get; set; }
     }
 }

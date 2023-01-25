@@ -5,26 +5,33 @@ using NajotEdu.ru.Registar;
 
 namespace NajotEdu.ru.Controllers
 {
-    [Route("[api/controller]")]
+    [Route("api/[controller]")]
+    [ApiController]
     [Authorize]
     public class AuthController : Controller
     {
         private readonly IAuthServer _authServer;
         private readonly ILogger<AuthController> _logger;
-        public AuthController(IAuthServer authServer, ILogger<AuthController> logger) 
+        public AuthController(IAuthServer authServer, ILogger<AuthController> logger)
         {
             _authServer = authServer;
             _logger = logger;
         }
 
-        [HttpPost("Login")]
-        public IActionResult PutLogin(LoginRegistr login)
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] LoginRegistr login)
         {
-            return Ok();
+            try
+            {
+                var token = await _authServer.Login(login);
+
+                return Ok(token);
+            }
+            catch (Exception exx)
+            {
+                return BadRequest("Username or Password is not valid");
+            }
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
     }
 }
